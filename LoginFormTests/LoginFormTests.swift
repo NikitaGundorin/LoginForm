@@ -10,25 +10,77 @@ import XCTest
 @testable import LoginForm
 
 class LoginFormTests: XCTestCase {
+    var sut: ViewController!
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        try super.setUpWithError()
+        sut = ViewController()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        sut = nil
+        try super.tearDownWithError()
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func testCheckValidEmailShouldReturnFalseForIncorrectEmails() {
+        let invalidEmail1 = "123@abc"
+        let result1 = sut.checkValidEmail(email: invalidEmail1)
+        XCTAssertEqual(result1, false, "Positive result for invalid email")
+        
+        let invalidEmail2 = "abcabc.ru"
+        let result2 = sut.checkValidEmail(email: invalidEmail2)
+        XCTAssertEqual(result2, false, "Positive result for invalid email")
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testCheckValidEmailShouldReturnTrueForCorrectEmails() {
+        let validEmail1 = "1abc12@abc.com"
+        let result1 = sut.checkValidEmail(email: validEmail1)
+        XCTAssertEqual(result1, true, "Negative result for valid email")
+        
+        let validEmail2 = "test2_a@yandex.ru"
+        let result2 = sut.checkValidEmail(email: validEmail2)
+        XCTAssertEqual(result2, true, "Negative result for valid email")
     }
-
+    
+    func testCheckValidPasswordShouldReturnCorrectWarningForShortPassword() {
+        let shortPassword = "abc12"
+        let result = sut.checkValidPassword(password: shortPassword)
+        XCTAssertEqual(result,
+                       "Password must not be shorter than 6 characters",
+                       "Incorrect result for short password")
+    }
+    
+    func testCheckValidPasswordShouldReturnCorrectWarningForUppercaselessPass() {
+        let uppercaselessPass = "abcdef"
+        let result = sut.checkValidPassword(password: uppercaselessPass)
+        XCTAssertEqual(result,
+                       "Password must contain at least one uppercase letter",
+                       "Incorrect result for password without upeprcase")
+    }
+    
+    func testCheckValidPasswordShouldReturnCorrectWarningForLowercaselessPass() {
+        let lowercaselessPass = "PASSWORD"
+        let result = sut.checkValidPassword(password: lowercaselessPass)
+        XCTAssertEqual(result,
+                       "Password must contain at least one lowercase letter",
+                       "Incorrect result for password without lowercase")
+    }
+    
+    func testCheckValidPasswordShouldReturnCorrectWarningForNumberslessPass() {
+        let numberslessPass = "Password"
+        let result = sut.checkValidPassword(password: numberslessPass)
+        XCTAssertEqual(result,
+                       "Password must contain at least one number",
+                       "Incorrect result for password without numbers")
+    }
+    
+    func testCheckValidPasswordShouldReturnNilForCorrectPassword() {
+        let validPassword1 = "Abcd11"
+        let result1 = sut.checkValidPassword(password: validPassword1)
+        XCTAssertEqual(result1, nil, "Incorrect result for correct password")
+        
+        let validPassword2 = "Password01"
+        let result2 = sut.checkValidPassword(password: validPassword2)
+        XCTAssertEqual(result2, nil, "Incorrect result for correct password")
+    }
 }
