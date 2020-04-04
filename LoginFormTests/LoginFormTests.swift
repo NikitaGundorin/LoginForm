@@ -25,21 +25,21 @@ class LoginFormTests: XCTestCase {
     func testCheckValidEmailShouldReturnFalseForIncorrectEmails() {
         let invalidEmail1 = "123@abc"
         let result1 = sut.checkValidEmail(email: invalidEmail1)
-        XCTAssertEqual(result1, false, "Positive result for invalid email")
+        XCTAssertFalse(result1, "Positive result for invalid email")
         
         let invalidEmail2 = "abcabc.ru"
         let result2 = sut.checkValidEmail(email: invalidEmail2)
-        XCTAssertEqual(result2, false, "Positive result for invalid email")
+        XCTAssertFalse(result2, "Positive result for invalid email")
     }
     
     func testCheckValidEmailShouldReturnTrueForCorrectEmails() {
         let validEmail1 = "1abc12@abc.com"
         let result1 = sut.checkValidEmail(email: validEmail1)
-        XCTAssertEqual(result1, true, "Negative result for valid email")
+        XCTAssertTrue(result1, "Negative result for valid email")
         
         let validEmail2 = "test2_a@yandex.ru"
         let result2 = sut.checkValidEmail(email: validEmail2)
-        XCTAssertEqual(result2, true, "Negative result for valid email")
+        XCTAssertTrue(result2, "Negative result for valid email")
     }
     
     func testCheckValidPasswordShouldReturnCorrectWarningForShortPassword() {
@@ -77,10 +77,10 @@ class LoginFormTests: XCTestCase {
     func testCheckValidPasswordShouldReturnNilForCorrectPassword() {
         let validPassword1 = "Abcd11"
         let result1 = sut.checkValidPassword(password: validPassword1)
-        XCTAssertEqual(result1, nil, "Incorrect result for correct password")
+        XCTAssertNil(result1, "Incorrect result for correct password")
         
         let validPassword2 = "Password01"
         let result2 = sut.checkValidPassword(password: validPassword2)
-        XCTAssertEqual(result2, nil, "Incorrect result for correct password")
+        XCTAssertNil(result2, "Incorrect result for correct password")
     }
 }
